@@ -39,6 +39,7 @@ stdenv.mkDerivation rec {
     "--enable-talloc-compat1"
     "--bundled-libraries=NONE"
     "--builtin-libraries=replace"
+    "--jobs=1"
   ];
 
   # this must not be exported before the ConfigurePhase otherwise waf whines

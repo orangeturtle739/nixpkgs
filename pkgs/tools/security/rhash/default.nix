@@ -16,7 +16,7 @@ stdenv.mkDerivation rec {
   # configure script is not autotools-based, doesn't support these options
   configurePlatforms = [ ];
 
-  doCheck = true;
+  doCheck = !stdenv.isAarch32;
 
   checkTarget = "test-full";
 

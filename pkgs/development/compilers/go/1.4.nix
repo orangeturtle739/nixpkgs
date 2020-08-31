@@ -46,6 +46,8 @@ stdenv.mkDerivation rec {
     # Disabling the 'os/http/net' tests (they want files not available in
     # chroot builds)
     rm src/net/{multicast_test.go,parse_test.go,port_test.go}
+    # rm src/runtime/softfloat64_test.go
+    # rm src/strconv/atof_test.go
     # !!! substituteInPlace does not seems to be effective.
     # The os test wants to read files in an existing path. Just don't let it be /usr/bin.
     sed -i 's,/usr/bin,'"`pwd`", src/os/os_test.go
@@ -134,13 +136,16 @@ stdenv.mkDerivation rec {
            else if stdenv.hostPlatform.system == "x86_64-linux" then "amd64"
            else if stdenv.isAarch32 then "arm"
            else throw "Unsupported system";
-  GOARM = stdenv.lib.optionalString (stdenv.hostPlatform.system == "armv5tel-linux") "5";
+  # GOARM = stdenv.lib.optionalString (stdenv.hostPlatform.system == "armv5tel-linux") "5";
+  GOARM = 5;
   GO386 = 387; # from Arch: don't assume sse2 on i686
   CGO_ENABLED = 0;
 
   # The go build actually checks for CC=*/clang and does something different, so we don't
   # just want the generic `cc` here.
   CC = if stdenv.isDarwin then "clang" else "cc";
+
+  doCheck = stdenv.hostPlatform == stdenv.targetPlatform && !stdenv.isDarwin && !stdenv.isAarch32;
 
   installPhase = ''
     mkdir -p "$out/bin"

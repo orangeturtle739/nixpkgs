@@ -50,6 +50,8 @@ stdenv.mkDerivation {
     sed 's:/usr/lib64/pkcs11/ /usr/lib/pkcs11/ /usr/lib/x86_64-linux-gnu/pkcs11/:`pkg-config --variable=p11_module_path p11-kit-1`:' -i tests/p11-kit-trust.sh
   '' + lib.optionalString stdenv.hostPlatform.isMusl '' # See https://gitlab.com/gnutls/gnutls/-/issues/945
     sed '2iecho "certtool tests skipped in musl build"\nexit 0' -i tests/cert-tests/certtool
+  '' + lib.optionalString stdenv.isAarch32 ''
+    sed '2iecho "p11-kit-trust skipped due to aarch 32"\nexit 0' -i tests/p11-kit-trust.sh
   '';
 
   preConfigure = "patchShebangs .";

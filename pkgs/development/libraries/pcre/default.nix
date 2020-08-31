@@ -36,7 +36,7 @@ in stdenv.mkDerivation {
     patchShebangs RunGrepTest
   '';
 
-  doCheck = !(with stdenv.hostPlatform; isCygwin || isFreeBSD) && stdenv.hostPlatform == stdenv.buildPlatform;
+  doCheck = !(with stdenv.hostPlatform; isCygwin || isFreeBSD || stdenv.isAarch32) && stdenv.hostPlatform == stdenv.buildPlatform;
     # XXX: test failure on Cygwin
     # we are running out of stack on both freeBSDs on Hydra
 

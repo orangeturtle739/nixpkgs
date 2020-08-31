@@ -1,0 +1,17 @@
+diff --git a/giscanner/shlibs.py b/giscanner/shlibs.py
+index af32502..53a4f86 100644
+--- a/giscanner/shlibs.py
++++ b/giscanner/shlibs.py
+@@ -108,7 +108,11 @@ def _resolve_non_libtool(options, binary, libraries):
+         elif platform_system == 'Darwin':
+             args.extend(['otool', '-L', binary.args[0]])
+         else:
+-            args.extend(['ldd', binary.args[0]])
++            interp = subprocess.check_output(args + ["patchelf", "--print-interpreter", binary.args[0]])
++            if isinstance(interp, bytes):
++                interp = interp.decode("utf-8", "replace")
++            interp = interp.strip()
++            args.extend([interp, "--list", binary.args[0]])
+         output = subprocess.check_output(args)
+         if isinstance(output, bytes):
+             output = output.decode("utf-8", "replace")

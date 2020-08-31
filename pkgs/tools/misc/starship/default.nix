@@ -40,6 +40,8 @@ rustPlatform.buildRustPackage rec {
 
   checkFlagsArray = [ "--skip=directory::home_directory" "--skip=directory::directory_in_root" ];
 
+  doCheck = !stdenv.isAarch32;
+
   meta = with stdenv.lib; {
     description = "A minimal, blazing fast, and extremely customizable prompt for any shell";
     homepage = "https://starship.rs";

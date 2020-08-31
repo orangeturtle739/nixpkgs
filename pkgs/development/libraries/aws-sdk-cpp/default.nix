@@ -36,7 +36,7 @@ stdenv.mkDerivation rec {
     "-DBUILD_DEPS=OFF"
     "-DCMAKE_SKIP_BUILD_RPATH=OFF"
   ] ++ lib.optional (!customMemoryManagement) "-DCUSTOM_MEMORY_MANAGEMENT=0"
-  ++ lib.optionals (stdenv.buildPlatform != stdenv.hostPlatform) [
+  ++ lib.optionals (stdenv.buildPlatform != stdenv.hostPlatform || stdenv.isAarch32) [
     "-DENABLE_TESTING=OFF"
     "-DCURL_HAS_H2=0"
   ] ++ lib.optional (apis != ["*"])

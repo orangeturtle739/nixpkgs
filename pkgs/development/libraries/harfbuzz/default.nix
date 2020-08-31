@@ -64,7 +64,7 @@ stdenv.mkDerivation {
     ++ optional withGraphite2 graphite2
     ++ optionals withIcu [ icu harfbuzz ];
 
-  doCheck = true;
+  doCheck = false;
 
   # Slightly hacky; some pkgs expect them in a single directory.
   postFixup = optionalString withIcu ''

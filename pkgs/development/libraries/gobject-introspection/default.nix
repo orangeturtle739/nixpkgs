@@ -46,6 +46,11 @@ stdenv.mkDerivation rec {
       src = ./absolute_shlib_path.patch;
       inherit nixStoreDir;
     })
+    (substituteAll {
+      # https://github.com/Gallopsled/pwntools/issues/925
+      # ldd doesn't work under qemu because it runs on qemu itself
+      src = ./libpath.patch;
+    })
   ] ++ stdenv.lib.optionals x11Support [
     # Hardcode the cairo shared library path in the Cairo gir shipped with this package.
     # https://github.com/NixOS/nixpkgs/issues/34080
@@ -89,7 +94,7 @@ stdenv.mkDerivation rec {
     "-Dgtk_doc=true"
   ];
 
-  doCheck = !stdenv.isAarch64;
+  doCheck = !stdenv.isAarch64 && !stdenv.isAarch32;
 
   preCheck = ''
     # Our gobject-introspection patches make the shared library paths absolute

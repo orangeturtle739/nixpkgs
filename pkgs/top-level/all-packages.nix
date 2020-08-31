@@ -9064,20 +9064,22 @@ in
       };
     }
   else
-    callPackage ../development/compilers/go/1.4.nix {
+    callPackage ../development/compilers/go/1.4.nix ({
       inherit (darwin.apple_sdk.frameworks) Security;
-    };
+    } // lib.optionalAttrs (stdenv.isAarch64 || stdenv.isAarch32) {
+      stdenv = gcc8Stdenv;
+    });
 
   go_1_14 = callPackage ../development/compilers/go/1.14.nix ({
     inherit (darwin.apple_sdk.frameworks) Security Foundation;
-  } // lib.optionalAttrs stdenv.isAarch64 {
+  } // lib.optionalAttrs (stdenv.isAarch64 || stdenv.isAarch32) {
     stdenv = gcc8Stdenv;
     buildPackages = buildPackages // { stdenv = gcc8Stdenv; };
   });
 
   go_1_15 = callPackage ../development/compilers/go/1.15.nix ({
     inherit (darwin.apple_sdk.frameworks) Security Foundation;
-  } // lib.optionalAttrs stdenv.isAarch64 {
+  } // lib.optionalAttrs (stdenv.isAarch64 || stdenv.isAarch32) {
     stdenv = gcc8Stdenv;
     buildPackages = buildPackages // { stdenv = gcc8Stdenv; };
   });
