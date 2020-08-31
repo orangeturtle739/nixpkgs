@@ -52,7 +52,10 @@ stdenv.mkDerivation rec {
       --ignore=test/t/test_nethogs.py \
       --ignore=test/t/unit/test_unit_ip_addresses.py \
       --ignore=test/t/test_ls.py \
-      --ignore=test/t/test_screen.py
+      --ignore=test/t/test_screen.py \
+      --ignore=test/t/test_date.py \
+      --ignore=test/t/test_patch.py \
+      --ignore=test/t/test_sudo.py
   '';
 
   prePatch = stdenv.lib.optionalString stdenv.isDarwin ''

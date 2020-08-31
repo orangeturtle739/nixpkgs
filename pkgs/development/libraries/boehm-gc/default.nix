@@ -34,7 +34,7 @@ stdenv.mkDerivation rec {
   nativeBuildInputs =
     lib.optional stdenv.hostPlatform.isMinGW autoreconfHook;
 
-  doCheck = true; # not cross;
+  doCheck = false; # not cross;
 
   enableParallelBuilding = true;
 

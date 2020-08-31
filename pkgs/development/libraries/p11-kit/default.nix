@@ -31,7 +31,7 @@ stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
 
-  doCheck = !stdenv.isDarwin;
+  doCheck = !stdenv.isDarwin && !stdenv.isAarch32;
 
   installFlags = [
     "exampledir=${placeholder "out"}/etc/pkcs11"

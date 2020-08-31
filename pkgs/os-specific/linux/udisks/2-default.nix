@@ -77,7 +77,7 @@ stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
 
-  doCheck = true;
+  doCheck = false;
 
   meta = with stdenv.lib; {
     description = "A daemon, tools and libraries to access and manipulate disks, storage devices and technologies";

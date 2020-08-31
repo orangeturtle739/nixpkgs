@@ -13,7 +13,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ libpng ];
 
-  configureFlags = stdenv.lib.optional stdenv.isAarch32 "--disable-arm-iwmmxt";
+  configureFlags = stdenv.lib.optional stdenv.isAarch32 "--disable-arm-iwmmxt --disable-vmx --disable-arm-neon --disable-arm-simd";
 
   doCheck = true;
 
