@@ -9032,25 +9032,27 @@ in
       };
     }
   else
-    callPackage ../development/compilers/go/1.4.nix {
+    callPackage ../development/compilers/go/1.4.nix ({
       inherit (darwin.apple_sdk.frameworks) Security;
-    };
+    } // lib.optionalAttrs (stdenv.isAarch64 || stdenv.isAarch32) {
+      stdenv = gcc8Stdenv;
+    });
 
   go_1_14 = callPackage ../development/compilers/go/1.14.nix ({
     inherit (darwin.apple_sdk.frameworks) Security Foundation;
-  } // lib.optionalAttrs stdenv.isAarch64 {
+  } // lib.optionalAttrs (stdenv.isAarch64 || stdenv.isAarch32) {
     stdenv = gcc8Stdenv;
     buildPackages = buildPackages // { stdenv = gcc8Stdenv; };
   });
 
   go_1_15 = callPackage ../development/compilers/go/1.15.nix ({
     inherit (darwin.apple_sdk.frameworks) Security Foundation;
-  } // lib.optionalAttrs stdenv.isAarch64 {
+  } // lib.optionalAttrs (stdenv.isAarch64 || stdenv.isAarch32) {
     stdenv = gcc8Stdenv;
     buildPackages = buildPackages // { stdenv = gcc8Stdenv; };
   });
 
-  go = go_1_15;
+  go = go_1_14;
 
   go-repo-root = callPackage ../development/tools/go-repo-root { };
 
@@ -15974,7 +15976,7 @@ in
     go = buildPackages.go_1_15;
   };
 
-  buildGoPackage = buildGo115Package;
+  buildGoPackage = buildGo114Package;
 
   buildGo114Module = callPackage ../development/go-modules/generic {
     go = buildPackages.go_1_14;
@@ -15983,7 +15985,7 @@ in
     go = buildPackages.go_1_15;
   };
 
-  buildGoModule = buildGo115Module;
+  buildGoModule = buildGo114Module;
 
   go2nix = callPackage ../development/tools/go2nix { };
 

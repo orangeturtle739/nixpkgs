@@ -174,7 +174,8 @@ stdenv.mkDerivation rec {
     else
       null;
 
-  GOARM = toString (stdenv.lib.intersectLists [(stdenv.hostPlatform.parsed.cpu.version or "")] ["5" "6" "7"]);
+  # GOARM = toString (stdenv.lib.intersectLists [(stdenv.hostPlatform.parsed.cpu.version or "")] ["5" "6" "7"]);
+  GOARM = 5;
   GO386 = 387; # from Arch: don't assume sse2 on i686
   CGO_ENABLED = 1;
   # Hopefully avoids test timeouts on Hydra
@@ -205,7 +206,7 @@ stdenv.mkDerivation rec {
     (cd src && ./make.bash)
   '';
 
-  doCheck = stdenv.hostPlatform == stdenv.targetPlatform && !stdenv.isDarwin;
+  doCheck = stdenv.hostPlatform == stdenv.targetPlatform && !stdenv.isDarwin && !stdenv.isAarch32;
 
   checkPhase = ''
     runHook preCheck
