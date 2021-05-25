@@ -1,4 +1,4 @@
-{ stdenv, squashfsTools, closureInfo
+{ stdenv, squashfsTools, closureInfo, findutils
 
 , # The root directory of the squashfs filesystem is filled with the
   # closures of the Nix store paths listed here.
@@ -11,7 +11,7 @@
 stdenv.mkDerivation {
   name = "squashfs.img";
 
-  nativeBuildInputs = [ squashfsTools ];
+  nativeBuildInputs = [ squashfsTools findutils ];
 
   buildCommand =
     ''
@@ -21,8 +21,11 @@ stdenv.mkDerivation {
       # for nix-store --load-db.
       cp $closureInfo/registration nix-path-registration
 
+      cat << EOF > mksquashfs.sh
+      exec mksquashfs "\$@" $out -no-recovery -keep-as-directory -all-root -b 1048576 -comp ${comp}
+      EOF
+
       # Generate the squashfs image.
-      mksquashfs nix-path-registration $(cat $closureInfo/store-paths) $out \
-        -keep-as-directory -all-root -b 1048576 -comp ${comp}
+      echo "nix-path-registration" | cat - $closureInfo/store-paths | xargs bash mksquashfs.sh
     '';
 }
